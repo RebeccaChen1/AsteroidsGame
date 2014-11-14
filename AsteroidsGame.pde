@@ -1,4 +1,4 @@
-SpaceShip rebecca= new SpaceShip();
+SpaceShip rebecca= new SpaceShip(); 
 Stars[] manyStars = new Stars[40];
 ArrayList <Asteroids> cluster;
 boolean gameOver;
@@ -14,24 +14,27 @@ boolean gameOver;
       manyStars[i]= new Stars();
     }
     cluster= new ArrayList <Asteroids>();
-    for(int i=0;i<30;i++)
+    for(int i=0;i<10;i++)
     {
       cluster.add(new Asteroids());
-    }
-    if(gameOver==true)
-    {
-      rebecca.setX(0);
-      rebecca.sexY(0);
-      for(int i=0;i<cluster.size();i++)
-      {
-        cluster.get.setX()
-      }
     }
   }
   public void draw() 
   {
     background(0);
-    
+    if(gameOver==true)
+    {
+       for(int i=0;i<cluster.size();i++)
+      {
+        cluster.get(i).setDirectionX(0);
+        cluster.get(i).setDirectionY(0);
+        rebecca.setDirectionX(0);
+        rebecca.setDirectionY(0);
+        textSize(30);
+        textAlign(CENTER);
+        text("Game Over", 250, 250);
+      }
+    }
     rebecca.show();
     rebecca.move();
     for(int i=0;i<manyStars.length;i++)
