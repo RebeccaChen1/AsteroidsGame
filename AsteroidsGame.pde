@@ -82,12 +82,9 @@ boolean gameOver;
   }
    public void keyPressed()
       {
-        if(key=='r')
-        {
-          gameOver=false;
-        }
-        if(keyCode==UP)
-        {
+          
+      if(keyCode==UP)
+       {
          rebecca.accelerate(.1);
        }
        if(keyCode==DOWN)
