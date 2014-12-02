@@ -1,7 +1,9 @@
 SpaceShip rebecca= new SpaceShip(); 
 Stars[] manyStars = new Stars[40];
+ArrayList <Bullet> lotsOfBullets=new ArrayList <Bullet>();
 ArrayList <Asteroids> cluster;
 boolean gameOver;
+
 
 
   public void setup() 
@@ -9,22 +11,25 @@ boolean gameOver;
     gameOver=false;
     size(500,500);
     background(0);
+    noStroke();
     for(int i=0;i<manyStars.length;i++)
     {
       manyStars[i]= new Stars();
     }
     cluster= new ArrayList <Asteroids>();
-    for(int i=0;i<10;i++)
+    for(int i=0;i<20;i++)
     {
       cluster.add(new Asteroids());
     }
+    
+    
   }
   public void draw() 
   {
     background(0);
     if(gameOver==true)
     {
-       for(int i=0;i<cluster.size();i++)
+      for(int i=0;i<cluster.size();i++)
       {
         cluster.get(i).setDirectionX(0);
         cluster.get(i).setDirectionY(0);
@@ -41,9 +46,15 @@ boolean gameOver;
     {
       manyStars[i].show();
     }
+    for(int i=0;i<lotsOfBullets.size();i++)
+    {
+      lotsOfBullets.get(i).show();
+      lotsOfBullets.get(i).move();
+    }
    
     for(int i=0;i<cluster.size();i++)
     {
+
       if(dist(cluster.get(i).getX(),cluster.get(i).getY(),rebecca.getX(),rebecca.getY())<20)
       {
         cluster.remove(i);
@@ -55,10 +66,26 @@ boolean gameOver;
       cluster.get(i).move();
     }
     }
+    for(int j=0;j<cluster.size();j++)
+    {
+    for(int i=0;i<lotsOfBullets.size();i++)
+    {
+      if(dist(cluster.get(j).getX(),cluster.get(j).getY(),lotsOfBullets.get(i).getX(),lotsOfBullets.get(i).getY())<20)
+      {
+        cluster.remove(j);
+        lotsOfBullets.remove(i);
+        cluster.add(new Asteroids());
+      }
+    }
+    }
     
   }
    public void keyPressed()
       {
+        if(key=='r')
+        {
+          gameOver=false;
+        }
         if(keyCode==UP)
         {
          rebecca.accelerate(.1);
@@ -75,11 +102,15 @@ boolean gameOver;
        {
         rebecca.rotate(-5);
        }
-       if(key==' ')
+       if(key=='h')
        {
         rebecca.setX((int)(Math.random()*500));
         rebecca.setY((int)(Math.random()*500));
         rebecca.setPointDirection((int)(Math.random()*360));
+       }
+       if(key==' ')
+       {
+         lotsOfBullets.add(new Bullet(rebecca));
        }
    }
    
@@ -116,6 +147,41 @@ boolean gameOver;
       public double getDirectionY(){return myDirectionY;}
       public void setPointDirection(int degrees){myPointDirection=degrees;}
       public double getPointDirection(){return myPointDirection;}   
+ }
+
+ class Bullet extends Floater
+ {
+  private int myColor;
+  private double dRadians;
+  public Bullet(SpaceShip theShip)
+  {
+    myCenterX=theShip.getX();
+    myCenterY=theShip.getY();
+    myPointDirection=theShip.getPointDirection();
+    dRadians =myPointDirection*(Math.PI/180);
+    myDirectionX=3*Math.cos(dRadians) + theShip.getDirectionX();
+    myDirectionY=3*Math.sin(dRadians) + theShip.getDirectionY();
+    myColor=color(0,255,0);
+  }
+  public void show()
+  {
+    noStroke();
+    fill(myColor);
+    ellipse((int)myCenterX,(int)myCenterY,10,10);
+
+  }
+
+      public void setX(int x){myCenterX=x;}
+      public int getX(){return (int)myCenterX;}
+      public void setY(int y){myCenterY=y;}
+      public int getY(){return (int)myCenterY;}
+      public void setDirectionX(double x){myDirectionX=x;}
+      public double getDirectionX(){return myDirectionX;}
+      public void setDirectionY(double y){myDirectionY=y;}
+      public double getDirectionY(){return myDirectionY;}
+      public void setPointDirection(int degrees){myPointDirection=degrees;}
+      public double getPointDirection(){return myPointDirection;}  
+
  }
 
  class Stars
